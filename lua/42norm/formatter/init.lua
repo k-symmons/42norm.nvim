@@ -1,6 +1,16 @@
 local M = {}
 local utils = require("42norm.utils")
 
+-- c_formatter_42's return-expression regex does not require a word boundary.
+-- An identifier such as `to_return` can therefore be rewritten as
+-- `to_return (= value)` or `to_return = value)`, which is invalid C. Limit
+-- the repair to identifiers containing `return` so normal formatter output is
+-- left untouched.
+local function repair_return_identifier_assignment(content)
+	content = content:gsub("([%a_][%w_]*return[%w_]*)%s*%(%s*=", "%1 =")
+	return content:gsub("([%a_][%w_]*return[%w_]*)%s*=%s*([^;\n]-)%)%s*;", "%1 = %2;")
+end
+
 function M.format(formatter_cmd)
 	-- Create a temporary file with the buffer content
 	local buf = vim.api.nvim_get_current_buf()
@@ -45,6 +55,7 @@ function M.format(formatter_cmd)
 	-- Read the formatted content
 	local formatted_content = formatted_file:read("*a")
 	formatted_file:close()
+	formatted_content = repair_return_identifier_assignment(formatted_content)
 
 	-- Split the content into lines and remove any trailing empty lines
 	local lines = vim.split(formatted_content, "\n")

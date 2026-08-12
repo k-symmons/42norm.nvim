@@ -4,8 +4,6 @@ local formatter = require("42norm.formatter")
 local utils = require("42norm.utils")
 
 local function on_complete(output, run_err)
-	output = utils.strip_color_codes(output)
-
 	if run_err == "timeout" then
 		vim.notify("Linter Timed out.", vim.log.levels.ERROR)
 		return
@@ -17,6 +15,8 @@ local function on_complete(output, run_err)
 	if output == nil then
 		return
 	end
+
+	output = utils.strip_color_codes(output)
 
 	local diagnostics = {}
 	output = output:gsub("^\n?[^\n]+[\n]?", "")

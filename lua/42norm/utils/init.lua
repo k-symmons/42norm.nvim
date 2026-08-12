@@ -9,6 +9,9 @@ function M.get_extension(buf)
 end
 
 function M.strip_color_codes(text)
+	if text == nil then
+		return nil
+	end
 	return text:gsub("\027%[%d+m", ""):gsub("\027%[%d);%dm", ""):gsub("\027%[%d;%d;%dm", "")
 end
 
