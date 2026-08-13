@@ -43,7 +43,14 @@ local function on_complete(output, run_err)
 end
 
 function M.lint()
-	linter.lint("norminette", on_complete)
+	local buf = vim.api.nvim_get_current_buf()
+	local command = "norminette"
+
+	if utils.get_extension(buf) == "h" then
+		command = command .. " -R CheckDefine"
+	end
+
+	linter.lint(command, on_complete)
 end
 
 function M.format()

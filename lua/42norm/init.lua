@@ -7,14 +7,14 @@ local M = {}
 local attached_buffers = {}
 
 M.format = function()
-	local filetype = vim.bo.filetype
+	local filetype = utils.resolve_filetype(vim.api.nvim_get_current_buf())
 	if handlers[filetype] then
 		handlers[filetype].format()
 	end
 end
 
 M.check_norms = function()
-	local filetype = vim.bo.filetype
+	local filetype = utils.resolve_filetype(vim.api.nvim_get_current_buf())
 	if handlers[filetype] then
 		handlers[filetype].lint()
 	end

@@ -11,7 +11,7 @@
 
 ## Supported files
 
-- **C**: [`42norm.handlers.c`](lua/42norm/handlers/c.lua)
+- **C and headers** (`.c`, `.h`): [`42norm.handlers.c`](lua/42norm/handlers/c.lua). Header files run Norminette with `-R CheckDefine`.
 - **Python**: [`42norm.handlers.python`](lua/42norm/handlers/python.lua)
 
 ## Requirements
@@ -117,4 +117,3 @@ end, {})
 ## Contributing
 
 Contributions are welcome. Please keep changes focused and consistent with the existing module layout.
-
